@@ -1,0 +1,27 @@
+version: "3"
+services:
+  plex:
+    image: plexinc/pms-docker
+    container_name: plex
+    volumes:
+      - ./data:/data # The media folder
+      - ./plex/transcode:/transcode # Transcoder temporary directory
+      - ./plex/config:/config # Configurations
+    environment:
+      - TZ=Asia/Shanghai
+      - PLEX_CLAIM=claim-zsKS2sgy28-ci68xwY7B # 更换claim https://www.plex.tv/claim/
+    hostname: "plex-server" # change the name to whatever you like
+    ports:
+      - 32400:32400
+    restart: always
+
+  filebrowser:
+    image: filebrowser/filebrowser
+    container_name: filebrowser
+    volumes:
+      - ./filebrowser/database.db:/database.db
+      - ./filebrowser/filebrowser.json:/.filebrowser.json
+      - ./data:/srv
+    ports:
+      - 6700:80
+    restart: always
